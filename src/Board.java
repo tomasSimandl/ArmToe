@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -11,7 +12,7 @@ public class Board {
 
     static final int BOARD_HEIGHT = 9;
     
-    static final int MAX_LINE = 4;
+    static final int MAX_LINE = 5;
 
     public static enum State {Blank, X, O}
     private State[][] board;
@@ -68,6 +69,10 @@ public class Board {
     public boolean move (int index) {
         return move(index% BOARD_WIDTH, index/BOARD_HEIGHT );
     }
+    
+    public State getState(int index) {
+    	return board[index/BOARD_HEIGHT ][index% BOARD_WIDTH];
+    }
 
     /**
      * Places an X or an O on the specified location depending on who turn it is.
@@ -76,11 +81,9 @@ public class Board {
      * @return          true if the move has not already been played
      */
     public boolean move (int x, int y) {
-
         if (gameOver) {
             throw new IllegalStateException("TicTacToe is over. No moves can be played.");
         }
-
         if (board[y][x] == State.Blank) {
             board[y][x] = playersTurn;
         } else {
@@ -146,27 +149,28 @@ public class Board {
      * @return          the empty cells
      */
     public ArrayList<Integer> getAvailableMoves () {
-    	return movesAvailable;
-    	/*ArrayList<Integer> actualMoves = new ArrayList<Integer>(movesAvailable);
+    	//return movesAvailable;
+    	ArrayList<Integer> actualMoves = new ArrayList<Integer>(movesAvailable);
     	for(int i = 0; i<movesAvailable.size();i++) {
     		int index = movesAvailable.get(i);
-    		if(!isViable(index)) {
+    		if(!isViable(index) || getState(index)!=State.Blank) {
     			actualMoves.remove((Integer)index);
     		}
     	}
-        return actualMoves;*/
+        return actualMoves;
     }
 
     public boolean isViable(int index) {
-    	int x = index% BOARD_WIDTH;
-    	int y = index/BOARD_HEIGHT;
+    	int x = index % BOARD_WIDTH;
+    	int y = index / BOARD_HEIGHT;
     	int startPosX = (x - 1 < 0) ? x : x-1;
     	int startPosY = (y - 1 < 0) ? y : y-1;
     	int endPosX =   (x + 1 > 0) ? x : x+1;
     	int endPosY =   (y + 1 > 0) ? y : y+1;
     	for (int rowNum=startPosX; rowNum<=endPosX; rowNum++) {
     	    for (int colNum=startPosY; colNum<=endPosY; colNum++) {
-    	    	if(board[colNum][rowNum]!=State.Blank) {
+    	    	if(board[rowNum][colNum]!=State.Blank) {
+    	    		//System.out.println("yes "+colNum+" "+rowNum);
     	    		return true;
     	    	}
     	    }

@@ -1,11 +1,10 @@
 import java.io.IOException;
 
+
 /**
  * Uses the MiniMax algorithm to play a move in a game of Tic Tac Toe.
  */
 class MinMax {
-
-	static boolean fuckGetBack = false;
     private static double maxPly;
 
     /**
@@ -36,11 +35,8 @@ class MinMax {
      * @return              the score of the board
      */
     private static int miniMax (Board.State player, Board board, int currentPly) {
-    	if(currentPly == 0) {
-    		fuckGetBack = false;
-    	}
-        if (currentPly++ == maxPly || board.isGameOver() || fuckGetBack) {
-        	fuckGetBack = true;
+    	//System.out.println(board.toString());
+        if (currentPly++ == maxPly || board.isGameOver()) {
             return score(player, board);
         }
 
@@ -63,7 +59,6 @@ class MinMax {
         double bestScore = Double.NEGATIVE_INFINITY;
         int indexOfBestMove = -1;
         for (Integer theMove : board.getAvailableMoves()) {
-
             Board modifiedBoard = board.getDeepCopy();
             modifiedBoard.move(theMove);
 
@@ -75,7 +70,6 @@ class MinMax {
             }
 
         }
-
         board.move(indexOfBestMove);
         return (int)bestScore;
     }
@@ -91,7 +85,6 @@ class MinMax {
         double bestScore = Double.POSITIVE_INFINITY;
         int indexOfBestMove = -1;
         for (Integer theMove : board.getAvailableMoves()) {
-
             Board modifiedBoard = board.getDeepCopy();
             modifiedBoard.move(theMove);
 
@@ -122,7 +115,7 @@ class MinMax {
 
         
         if (board.isGameOver() && board.getWinner() == player) {
-            return 100;
+            return 80;
         } else if (board.isGameOver() && board.getWinner() == opponent) {
             return -100;
         } else {
