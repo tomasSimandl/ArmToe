@@ -24,7 +24,8 @@ class MinMax {
         }
 
         MinMax.maxPly = maxPly;
-        miniMax(player, board, 0);
+        int score = miniMax(player, board, 0);
+        System.out.println(score);
     }
 
     /**
@@ -115,21 +116,21 @@ class MinMax {
 
         
         if (board.isGameOver() && board.getWinner() == player) {
-            return 80;
+            return 1000;
         } else if (board.isGameOver() && board.getWinner() == opponent) {
-            return -100;
+            return -1000;
         } else {
         	int score = 0;
         	
         	for(int x = 0; x<Board.BOARD_WIDTH;x++) {
-        		score += board.checkColumn(x);
+        		score += board.checkColumn(x,player,true);
         	}
         	for(int y = 0; y<Board.BOARD_HEIGHT;y++) {
-        		score += board.checkRow(y);        	
+        		score += board.checkRow(y,player,true);        	
         	}
         	for(int x = 0; x<Board.BOARD_WIDTH;x++) {
-        		score += board.checkDiagonalFromTopLeft(x, Board.BOARD_HEIGHT/2);
-            	score += board.checkDiagonalFromTopRight(x, Board.BOARD_HEIGHT/2);
+        		score += board.checkDiagonalFromTopLeft(x, Board.BOARD_HEIGHT/2,player,true);
+            	score += board.checkDiagonalFromTopLeft(x, Board.BOARD_HEIGHT/2,player,true);
         	}
         	return score;   			
         }

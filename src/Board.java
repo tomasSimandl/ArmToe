@@ -13,6 +13,8 @@ public class Board {
     static final int BOARD_HEIGHT = 9;
     
     static final int MAX_LINE = 5;
+    
+    double lossPrevention = 1;
 
     public static enum State {Blank, X, O}
     private State[][] board;
@@ -100,10 +102,10 @@ public class Board {
         }
 
         // Check for a winner.
-        checkRow(y);
-        checkColumn(x);
-        checkDiagonalFromTopLeft(x, y);
-        checkDiagonalFromTopRight(x, y);
+        checkRow(y,playersTurn,false);
+        checkColumn(x,playersTurn,false);
+        checkDiagonalFromTopLeft(x, y,playersTurn,false);
+        checkDiagonalFromTopRight(x, y,playersTurn,false);
 
         playersTurn = (playersTurn == State.X) ? State.O : State.X;
         return true;
@@ -181,8 +183,9 @@ public class Board {
     /**
      * Checks the specified row to see if there is a winner.
      * @param row       the row to check
+     * @param player 
      */
-    public int checkRow (int row) {
+    public int checkRow (int row, State player, boolean flag) {
     	int inARow = 0;
     	boolean startOver = false;
         for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -190,7 +193,7 @@ public class Board {
         		inARow = 0;
         		startOver = false;
         	}
-            if (board[row][i] == playersTurn) {
+            if (board[row][i] == playersTurn || flag && board[row][i] != playersTurn) {
             	inARow++;
             } else {
             	startOver = true;
@@ -201,15 +204,21 @@ public class Board {
             }
         }
         
-
-    	return inARow;
+        if(player==playersTurn) {
+        	return inARow;
+        	
+        }else {
+        	return (int) (-inARow*lossPrevention);
+        	
+        }
     }
 
     /**
      * Checks the specified column to see if there is a winner.
      * @param column    the column to check
+     * @param player 
      */
-    public int checkColumn (int column) {
+    public int checkColumn (int column, State player, boolean flag) {
     	int inARow = 0;
     	boolean startOver = false;
         for (int i = 0; i < BOARD_HEIGHT; i++) {
@@ -217,7 +226,7 @@ public class Board {
         		inARow = 0;
         		startOver = false;
         	}
-            if (board[i][column] == playersTurn) {
+            if (board[i][column] == playersTurn || flag && board[i][column] != playersTurn) {
             	inARow++;
             } else {
             	startOver = true;
@@ -228,16 +237,22 @@ public class Board {
             }
         }
         
-
-    	return inARow;
+        if(player==playersTurn) {
+        	return inARow;
+        	
+        }else {
+        	return (int) (-inARow*lossPrevention);
+        	
+        }
     }
 
     /**
      * Check the left diagonal to see if there is a winner.
      * @param x         the x coordinate of the most recently played move
      * @param y         the y coordinate of the most recently played move
+     * @param player 
      */
-    public int checkDiagonalFromTopLeft (int x, int y) {
+    public int checkDiagonalFromTopLeft (int x, int y, State player, boolean flag) {
     	int min = Math.min(x, y);
     	int diagonalX = x-min;
     	int diagonalY = y-min;
@@ -248,7 +263,7 @@ public class Board {
         		inARow = 0;
         		startOver = false;
         	}
-            if (board[diagonalY][diagonalX] == playersTurn) {
+            if (board[diagonalY][diagonalX] == playersTurn || flag && board[diagonalY][diagonalX] != playersTurn) {
             	inARow++;
             } else {
             	startOver = true;
@@ -261,7 +276,13 @@ public class Board {
             diagonalY++;
     	}
 
-    	return inARow;
+    	  if(player==playersTurn) {
+          	return inARow;
+          	
+          }else {
+        	  return (int) (-inARow*lossPrevention);
+          	
+          }
     }
 
     /**
@@ -269,7 +290,7 @@ public class Board {
      * @param x     the x coordinate of the most recently played move
      * @param y     the y coordinate of the most recently played move
      */
-    public int checkDiagonalFromTopRight (int x, int y) {
+    public int checkDiagonalFromTopRight (int x, int y, State player, boolean flag) {
     	int diagonalX = x+y;
     	int diagonalY = 0;
     	int inARow = 0;
@@ -280,7 +301,7 @@ public class Board {
         		inARow = 0;
         		startOver = false;
         	}
-            if (board[diagonalY][diagonalX] == playersTurn) {
+            if (board[diagonalY][diagonalX] == playersTurn || flag &&board[diagonalY][diagonalX]  != playersTurn) {
             	inARow++;
             } else {
             	startOver = true;
@@ -295,7 +316,13 @@ public class Board {
             
     	}
     	
-    	return inARow;
+    	  if(player==playersTurn) {
+          	return inARow;
+          	
+          }else {
+          	return (int) (-inARow*lossPrevention);
+          	
+          }
     }
 
     /**
