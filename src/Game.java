@@ -47,7 +47,7 @@ public class Game {
 			b.move(Integer.parseInt(scanner.nextLine()),Integer.parseInt(scanner.nextLine()));
 			System.out.println(b.toString());
 			System.out.println();
-			MinMax.run(b.getTurn(), b, 5);
+			MinMax.run(b.getTurn(), b, 4);
 		}
 		
 		//scanner.close();	

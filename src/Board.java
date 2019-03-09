@@ -165,11 +165,12 @@ public class Board {
     	int y = index / BOARD_HEIGHT;
     	int startPosX = (x - 1 < 0) ? x : x-1;
     	int startPosY = (y - 1 < 0) ? y : y-1;
-    	int endPosX =   (x + 1 > 0) ? x : x+1;
-    	int endPosY =   (y + 1 > 0) ? y : y+1;
+    	int endPosX =   (x + 1 >= BOARD_WIDTH) ? x : x+1;
+    	int endPosY =   (y + 1 >= BOARD_HEIGHT) ? y : y+1;
     	for (int rowNum=startPosX; rowNum<=endPosX; rowNum++) {
     	    for (int colNum=startPosY; colNum<=endPosY; colNum++) {
-    	    	if(board[rowNum][colNum]!=State.Blank) {
+    	    	
+    	    	if(board[colNum][rowNum]!=State.Blank) {
     	    		//System.out.println("yes "+colNum+" "+rowNum);
     	    		return true;
     	    	}

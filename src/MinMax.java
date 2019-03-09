@@ -120,7 +120,7 @@ class MinMax {
             return -100;
         } else {
         	int score = 0;
-        	/*
+        	
         	for(int x = 0; x<Board.BOARD_WIDTH;x++) {
         		score += board.checkColumn(x);
         	}
@@ -130,7 +130,7 @@ class MinMax {
         	for(int x = 0; x<Board.BOARD_WIDTH;x++) {
         		score += board.checkDiagonalFromTopLeft(x, Board.BOARD_HEIGHT/2);
             	score += board.checkDiagonalFromTopRight(x, Board.BOARD_HEIGHT/2);
-        	}*/
+        	}
         	return score;   			
         }
     }
