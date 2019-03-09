@@ -146,14 +146,15 @@ public class Board {
      * @return          the empty cells
      */
     public ArrayList<Integer> getAvailableMoves () {
-    	ArrayList<Integer> actualMoves = new ArrayList<Integer>(movesAvailable);
+    	return movesAvailable;
+    	/*ArrayList<Integer> actualMoves = new ArrayList<Integer>(movesAvailable);
     	for(int i = 0; i<movesAvailable.size();i++) {
     		int index = movesAvailable.get(i);
     		if(!isViable(index)) {
     			actualMoves.remove((Integer)index);
     		}
     	}
-        return actualMoves;
+        return actualMoves;*/
     }
 
     public boolean isViable(int index) {
