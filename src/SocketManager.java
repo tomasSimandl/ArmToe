@@ -1,22 +1,27 @@
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.stream.Stream;
 
 public class SocketManager {
 
     private Socket socket;
     private PrintWriter out;
+    private OutputStream stream;
 
     public SocketManager(String ip, int port) throws IOException {
         socket = new Socket(ip, port);
-        out = new PrintWriter(socket.getOutputStream(), true);
+        stream = socket.getOutputStream();
         System.out.println("Socket opened successfully!");
     }
 
-    public void sendCooridnates(int x, int y) {
-        System.out.println("Sending coordinates to Karel: [" + x + "," + y + "]");
+    public void sendCooridnates(int x, int y) throws IOException {
+        System.out.println("Sending coordinates to Karel: " + String.valueOf(x) + y);
         System.out.println("Is socket connected: " + socket.isConnected());
-        out.println(x + " " + y + " ");
+        stream.write(x);
+        stream.write(y);
+        stream.flush();
     }
 
     public void stopConnection() throws IOException {
