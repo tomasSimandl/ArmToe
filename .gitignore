@@ -8,3 +8,4 @@ bin/Game.class
 bin/MinMax.class
 bin/Board.class
 bin/Board$State.class
+bin/SocketManager.class

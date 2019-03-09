@@ -119,9 +119,9 @@ class MinMax {
 
         
         if (board.isGameOver() && board.getWinner() == player) {
-            return 100;
+            return 10000;
         } else if (board.isGameOver() && board.getWinner() == opponent) {
-            return -100;
+            return -10000;
         } else {
         	int score = 0;
         	

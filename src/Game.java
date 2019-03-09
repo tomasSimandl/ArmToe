@@ -23,6 +23,17 @@ public class Game {
 
 	public Game() throws InterruptedException, IOException {
 
+		/*Board b = new Board();
+		while(!b.isGameOver()) {
+			b.move(Integer.parseInt(scanner.nextLine()), Integer.parseInt(scanner.nextLine()));
+			System.out.println(b.toString());
+			System.out.println();
+			MinMax.run(b.getTurn(), b, MAX_PLY);
+			System.out.println(b.toString());
+			System.out.println();
+		}
+		*/
+		
 		socketManager = new SocketManager(IP, PORT);
 		if(!socketManager.isOpen()){
 			System.out.println("Connection was not established!");
@@ -40,6 +51,9 @@ public class Game {
 				MinMax.run(Board.State.O, board, MAX_PLY);
 				int[] lastMove = MinMax.lastMove;
 				socketManager.sendCoordinates(lastMove[0], lastMove[1]);
+				if(board.isGameOver()) {
+					break;
+				}
 			}
 		}catch (Exception e){
 			e.printStackTrace();
