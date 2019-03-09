@@ -5,7 +5,11 @@ import java.util.HashSet;
  */
 public class Board {
 
-    static final int BOARD_WIDTH = 3;
+    static final int BOARD_WIDTH = 7;
+
+    static final int BOARD_HEIGHT = 9;
+    
+    static final int MAX_LINE = 4;
 
     public enum State {Blank, X, O}
     private State[][] board;
@@ -20,7 +24,7 @@ public class Board {
      * Construct the Tic Tac Toe board.
      */
     Board() {
-        board = new State[BOARD_WIDTH][BOARD_WIDTH];
+        board = new State[BOARD_HEIGHT][BOARD_WIDTH];
         movesAvailable = new HashSet<>();
         reset();
     }
@@ -30,7 +34,7 @@ public class Board {
      * available at the start of the game).
      */
     private void initialize () {
-        for (int row = 0; row < BOARD_WIDTH; row++) {
+        for (int row = 0; row < BOARD_HEIGHT; row++) {
             for (int col = 0; col < BOARD_WIDTH; col++) {
                 board[row][col] = State.Blank;
             }
@@ -38,7 +42,7 @@ public class Board {
 
         movesAvailable.clear();
 
-        for (int i = 0; i < BOARD_WIDTH*BOARD_WIDTH; i++) {
+        for (int i = 0; i < BOARD_HEIGHT*BOARD_WIDTH; i++) {
             movesAvailable.add(i);
         }
     }
@@ -60,7 +64,7 @@ public class Board {
      * @return          true if the move has not already been played
      */
     public boolean move (int index) {
-        return move(index% BOARD_WIDTH, index/ BOARD_WIDTH);
+        return move(index% BOARD_HEIGHT, index/ BOARD_WIDTH);
     }
 
     /**
@@ -69,7 +73,7 @@ public class Board {
      * @param y         the y coordinate of the location
      * @return          true if the move has not already been played
      */
-    private boolean move (int x, int y) {
+    public boolean move (int x, int y) {
 
         if (gameOver) {
             throw new IllegalStateException("TicTacToe is over. No moves can be played.");
@@ -82,10 +86,10 @@ public class Board {
         }
 
         moveCount++;
-        movesAvailable.remove(y * BOARD_WIDTH + x);
+        movesAvailable.remove(y * BOARD_HEIGHT + x);
 
         // The game is a draw.
-        if (moveCount == BOARD_WIDTH * BOARD_WIDTH) {
+        if (moveCount == BOARD_HEIGHT * BOARD_WIDTH) {
             winner = State.Blank;
             gameOver = true;
         }
@@ -148,11 +152,19 @@ public class Board {
      * @param row       the row to check
      */
     private void checkRow (int row) {
-        for (int i = 1; i < BOARD_WIDTH; i++) {
-            if (board[row][i] != board[row][i-1]) {
-                break;
+    	int inARow = 0;
+    	boolean startOver = false;
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+        	if(startOver == true) {
+        		inARow = 0;
+        		startOver = false;
+        	}
+            if (board[row][i] == playersTurn) {
+            	inARow++;
+            } else {
+            	startOver = true;
             }
-            if (i == BOARD_WIDTH -1) {
+            if (inARow >= MAX_LINE) {
                 winner = playersTurn;
                 gameOver = true;
             }
@@ -164,11 +176,19 @@ public class Board {
      * @param column    the column to check
      */
     private void checkColumn (int column) {
-        for (int i = 1; i < BOARD_WIDTH; i++) {
-            if (board[i][column] != board[i-1][column]) {
-                break;
+    	int inARow = 0;
+    	boolean startOver = false;
+        for (int i = 0; i < BOARD_HEIGHT; i++) {
+        	if(startOver == true) {
+        		inARow = 0;
+        		startOver = false;
+        	}
+            if (board[i][column] == playersTurn) {
+            	inARow++;
+            } else {
+            	startOver = true;
             }
-            if (i == BOARD_WIDTH -1) {
+            if (inARow >= MAX_LINE) {
                 winner = playersTurn;
                 gameOver = true;
             }
@@ -181,17 +201,28 @@ public class Board {
      * @param y         the y coordinate of the most recently played move
      */
     private void checkDiagonalFromTopLeft (int x, int y) {
-        if (x == y) {
-            for (int i = 1; i < BOARD_WIDTH; i++) {
-                if (board[i][i] != board[i-1][i-1]) {
-                    break;
-                }
-                if (i == BOARD_WIDTH -1) {
-                    winner = playersTurn;
-                    gameOver = true;
-                }
+    	int min = Math.min(x, y);
+    	int diagonalX = x-min;
+    	int diagonalY = y-min;
+    	int inARow = 0;
+    	boolean startOver = false;
+    	while(diagonalX < BOARD_WIDTH && diagonalY < BOARD_HEIGHT) {
+    		if(startOver == true) {
+        		inARow = 0;
+        		startOver = false;
+        	}
+            if (board[diagonalY][diagonalX] == playersTurn) {
+            	inARow++;
+            } else {
+            	startOver = true;
             }
-        }
+            if (inARow >= MAX_LINE) {
+                winner = playersTurn;
+                gameOver = true;
+            }
+            diagonalX++;
+            diagonalY++;
+    	}
     }
 
     /**
@@ -200,17 +231,30 @@ public class Board {
      * @param y     the y coordinate of the most recently played move
      */
     private void checkDiagonalFromTopRight (int x, int y) {
-        if (BOARD_WIDTH -1-x == y) {
-            for (int i = 1; i < BOARD_WIDTH; i++) {
-                if (board[BOARD_WIDTH -1-i][i] != board[BOARD_WIDTH -i][i-1]) {
-                    break;
-                }
-                if (i == BOARD_WIDTH -1) {
-                    winner = playersTurn;
-                    gameOver = true;
-                }
+    	int diagonalX = x+y;
+    	int diagonalY = 0;
+    	int inARow = 0;
+    	boolean startOver = false;
+    	
+    	while(diagonalX < BOARD_WIDTH && diagonalY < BOARD_HEIGHT && 0 <= diagonalX && 0 <= diagonalY) {
+    		if(startOver == true) {
+        		inARow = 0;
+        		startOver = false;
+        	}
+            if (board[diagonalY][diagonalX] == playersTurn) {
+            	inARow++;
+            } else {
+            	startOver = true;
             }
-        }
+            if (inARow >= MAX_LINE) {
+                winner = playersTurn;
+                gameOver = true;
+            }
+            diagonalX--;
+            diagonalY++;
+            
+            
+    	}
     }
 
     /**
@@ -237,7 +281,7 @@ public class Board {
     public String toString () {
         StringBuilder sb = new StringBuilder();
 
-        for (int y = 0; y < BOARD_WIDTH; y++) {
+        for (int y = 0; y < BOARD_HEIGHT; y++) {
             for (int x = 0; x < BOARD_WIDTH; x++) {
 
                 if (board[y][x] == State.Blank) {
@@ -248,7 +292,7 @@ public class Board {
                 sb.append(" ");
 
             }
-            if (y != BOARD_WIDTH -1) {
+            if (y != BOARD_HEIGHT -1) {
                 sb.append("\n");
             }
         }

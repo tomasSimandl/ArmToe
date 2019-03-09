@@ -26,7 +26,8 @@ public class Game {
 				+ "0,0,0,0,0,0,0,";
 		InputStream is = new ByteArrayInputStream(game0.getBytes());
 		
-		Scanner scanner = new Scanner(is); //System.in
+		Scanner scanner = new Scanner(System.in); //System.in
+		/*
 		String[] input = scanner.next().split(",");
 		
 		int[][] gameState = new int[9][7]; 
@@ -35,9 +36,16 @@ public class Game {
 		}
 		
 		printGameState(gameState);
+		*/
 		
+		Board b = new Board();
+		while(!b.isGameOver()) {
+			System.out.println(b.toString());
+			b.move(Integer.parseInt(scanner.nextLine()),Integer.parseInt(scanner.nextLine()));
+			System.out.println();
+		}
 		
-		scanner.close();	
+		//scanner.close();	
 	}
 	
 	public static void printGameState(int[][] gameState){
