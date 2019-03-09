@@ -11,7 +11,7 @@ public class Board {
     
     static final int MAX_LINE = 4;
 
-    public enum State {Blank, X, O}
+    public static enum State {Blank, X, O}
     private State[][] board;
     private State playersTurn;
     private State winner;
@@ -64,7 +64,7 @@ public class Board {
      * @return          true if the move has not already been played
      */
     public boolean move (int index) {
-        return move(index% BOARD_HEIGHT, index/ BOARD_WIDTH);
+        return move(index% BOARD_WIDTH, index/BOARD_HEIGHT );
     }
 
     /**
@@ -151,7 +151,7 @@ public class Board {
      * Checks the specified row to see if there is a winner.
      * @param row       the row to check
      */
-    private void checkRow (int row) {
+    public int checkRow (int row) {
     	int inARow = 0;
     	boolean startOver = false;
         for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -169,13 +169,16 @@ public class Board {
                 gameOver = true;
             }
         }
+        
+
+    	return inARow;
     }
 
     /**
      * Checks the specified column to see if there is a winner.
      * @param column    the column to check
      */
-    private void checkColumn (int column) {
+    public int checkColumn (int column) {
     	int inARow = 0;
     	boolean startOver = false;
         for (int i = 0; i < BOARD_HEIGHT; i++) {
@@ -193,6 +196,9 @@ public class Board {
                 gameOver = true;
             }
         }
+        
+
+    	return inARow;
     }
 
     /**
@@ -200,7 +206,7 @@ public class Board {
      * @param x         the x coordinate of the most recently played move
      * @param y         the y coordinate of the most recently played move
      */
-    private void checkDiagonalFromTopLeft (int x, int y) {
+    public int checkDiagonalFromTopLeft (int x, int y) {
     	int min = Math.min(x, y);
     	int diagonalX = x-min;
     	int diagonalY = y-min;
@@ -223,6 +229,8 @@ public class Board {
             diagonalX++;
             diagonalY++;
     	}
+
+    	return inARow;
     }
 
     /**
@@ -230,7 +238,7 @@ public class Board {
      * @param x     the x coordinate of the most recently played move
      * @param y     the y coordinate of the most recently played move
      */
-    private void checkDiagonalFromTopRight (int x, int y) {
+    public int checkDiagonalFromTopRight (int x, int y) {
     	int diagonalX = x+y;
     	int diagonalY = 0;
     	int inARow = 0;
@@ -255,6 +263,8 @@ public class Board {
             
             
     	}
+    	
+    	return inARow;
     }
 
     /**

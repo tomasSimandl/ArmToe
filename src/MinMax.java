@@ -117,12 +117,24 @@ class MinMax {
 
         Board.State opponent = (player == Board.State.X) ? Board.State.O : Board.State.X;
 
+        
         if (board.isGameOver() && board.getWinner() == player) {
-            return 10;
+            return 100;
         } else if (board.isGameOver() && board.getWinner() == opponent) {
-            return -10;
+            return -100;
         } else {
-            return 0;
+        	int score = 0;
+        	for(int x = 0; x<Board.BOARD_WIDTH;x++) {
+        		score += board.checkColumn(x);
+        	}
+        	for(int y = 0; y<Board.BOARD_HEIGHT;y++) {
+        		score += board.checkRow(y);        	
+        	}
+        	for(int x = 0; x<Board.BOARD_WIDTH;x++) {
+        		score += board.checkDiagonalFromTopLeft(x, Board.BOARD_HEIGHT/2);
+            	score += board.checkDiagonalFromTopRight(x, Board.BOARD_HEIGHT/2);
+        	}
+        	return score;   			
         }
     }
 

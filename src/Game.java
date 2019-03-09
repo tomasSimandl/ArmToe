@@ -3,6 +3,8 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Scanner;
 
+
+
 public class Game {
 
 	public static void main(String[] args) {
@@ -41,8 +43,11 @@ public class Game {
 		Board b = new Board();
 		while(!b.isGameOver()) {
 			System.out.println(b.toString());
-			b.move(Integer.parseInt(scanner.nextLine()),Integer.parseInt(scanner.nextLine()));
 			System.out.println();
+			b.move(Integer.parseInt(scanner.nextLine()),Integer.parseInt(scanner.nextLine()));
+			System.out.println(b.toString());
+			System.out.println();
+			MinMax.run(b.getTurn(), b, 1000);
 		}
 		
 		//scanner.close();	
