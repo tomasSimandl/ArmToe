@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -15,7 +17,7 @@ public class Board {
     private State[][] board;
     private State playersTurn;
     private State winner;
-    private HashSet<Integer> movesAvailable;
+    private ArrayList<Integer> movesAvailable;
 
     private int moveCount;
     private boolean gameOver;
@@ -25,7 +27,7 @@ public class Board {
      */
     Board() {
         board = new State[BOARD_HEIGHT][BOARD_WIDTH];
-        movesAvailable = new HashSet<>();
+        movesAvailable = new ArrayList<Integer>();
         reset();
     }
 
@@ -86,7 +88,7 @@ public class Board {
         }
 
         moveCount++;
-        movesAvailable.remove(y * BOARD_HEIGHT + x);
+        movesAvailable.remove((Integer)(y * BOARD_HEIGHT + x));
 
         // The game is a draw.
         if (moveCount == BOARD_HEIGHT * BOARD_WIDTH) {
@@ -143,10 +145,33 @@ public class Board {
      * Get the indexes of all the positions on the board that are empty.
      * @return          the empty cells
      */
-    public HashSet<Integer> getAvailableMoves () {
-        return movesAvailable;
+    public ArrayList<Integer> getAvailableMoves () {
+    	ArrayList<Integer> actualMoves = new ArrayList<Integer>(movesAvailable);
+    	for(int i = 0; i<movesAvailable.size();i++) {
+    		int index = movesAvailable.get(i);
+    		if(!isViable(index)) {
+    			actualMoves.remove((Integer)index);
+    		}
+    	}
+        return actualMoves;
     }
 
+    public boolean isViable(int index) {
+    	int x = index% BOARD_WIDTH;
+    	int y = index/BOARD_HEIGHT;
+    	int startPosX = (x - 1 < 0) ? x : x-1;
+    	int startPosY = (y - 1 < 0) ? y : y-1;
+    	int endPosX =   (x + 1 > 0) ? x : x+1;
+    	int endPosY =   (y + 1 > 0) ? y : y+1;
+    	for (int rowNum=startPosX; rowNum<=endPosX; rowNum++) {
+    	    for (int colNum=startPosY; colNum<=endPosY; colNum++) {
+    	    	if(board[colNum][rowNum]!=State.Blank) {
+    	    		return true;
+    	    	}
+    	    }
+    	}
+    	return false;
+    }
     /**
      * Checks the specified row to see if there is a winner.
      * @param row       the row to check
@@ -280,7 +305,7 @@ public class Board {
 
         board.playersTurn       = this.playersTurn;
         board.winner            = this.winner;
-        board.movesAvailable    = new HashSet<>();
+        board.movesAvailable    = new ArrayList<>();
         board.movesAvailable.addAll(this.movesAvailable);
         board.moveCount         = this.moveCount;
         board.gameOver          = this.gameOver;
