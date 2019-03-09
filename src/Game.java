@@ -6,17 +6,29 @@ import java.util.Scanner;
 public class Game {
 
 	public static void main(String[] args) {
-		System.out.println(Arrays.toString(args));
-		InputStream is = new ByteArrayInputStream(((String)args[1]).getBytes());
+		InputStream is = new ByteArrayInputStream(args[0].getBytes());
 		
 		Scanner scanner = new Scanner(is); //System.in
-		int myInt = scanner.nextInt();
+		String[] input = scanner.next().split(",");
 		
+		int[][] gameState = new int[9][7]; 
+		for(int i = 0; i<input.length;i++) {
+			gameState[i/7][i%7] = Integer.parseInt(input[i]);
+		}
 		
-		System.out.println(myInt);
+		printGameState(gameState);
 		
 		
 		scanner.close();	
+	}
+	
+	public static void printGameState(int[][] gameState){
+		for(int i = 0; i<gameState.length;i++) {
+			for(int j = 0; j<gameState[0].length;j++) {
+				System.out.print(gameState[i][j]+" ");
+			}
+			System.out.println();
+		}
 	}
 
 }
