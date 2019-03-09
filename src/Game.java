@@ -48,6 +48,7 @@ public class Game {
 			System.out.println(b.toString());
 			System.out.println();
 			MinMax.run(b.getTurn(), b, 4);
+			System.out.println(Arrays.toString(MinMax.lastMove));
 		}
 		
 		//scanner.close();	

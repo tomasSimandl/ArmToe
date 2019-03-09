@@ -100,12 +100,13 @@ public class Board {
         }
 
         // Check for a winner.
-        checkRow(y);
-        checkColumn(x);
-        checkDiagonalFromTopLeft(x, y);
-        checkDiagonalFromTopRight(x, y);
+        checkRow(y,playersTurn);
+        checkColumn(x,playersTurn);
+        checkDiagonalFromTopLeft(x, y,playersTurn);
+        checkDiagonalFromTopRight(x, y,playersTurn);
 
         playersTurn = (playersTurn == State.X) ? State.O : State.X;
+        
         return true;
     }
 
@@ -181,8 +182,9 @@ public class Board {
     /**
      * Checks the specified row to see if there is a winner.
      * @param row       the row to check
+     * @param playersTurn 
      */
-    public int checkRow (int row) {
+    public int checkRow (int row, State playersTurn) {
     	int inARow = 0;
     	boolean startOver = false;
         for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -209,7 +211,7 @@ public class Board {
      * Checks the specified column to see if there is a winner.
      * @param column    the column to check
      */
-    public int checkColumn (int column) {
+    public int checkColumn (int column, State playersTurn) {
     	int inARow = 0;
     	boolean startOver = false;
         for (int i = 0; i < BOARD_HEIGHT; i++) {
@@ -237,7 +239,7 @@ public class Board {
      * @param x         the x coordinate of the most recently played move
      * @param y         the y coordinate of the most recently played move
      */
-    public int checkDiagonalFromTopLeft (int x, int y) {
+    public int checkDiagonalFromTopLeft (int x, int y, State playersTurn) {
     	int min = Math.min(x, y);
     	int diagonalX = x-min;
     	int diagonalY = y-min;
@@ -269,7 +271,7 @@ public class Board {
      * @param x     the x coordinate of the most recently played move
      * @param y     the y coordinate of the most recently played move
      */
-    public int checkDiagonalFromTopRight (int x, int y) {
+    public int checkDiagonalFromTopRight (int x, int y, State playersTurn) {
     	int diagonalX = x+y;
     	int diagonalY = 0;
     	int inARow = 0;
