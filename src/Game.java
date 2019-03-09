@@ -6,7 +6,25 @@ import java.util.Scanner;
 public class Game {
 
 	public static void main(String[] args) {
-		InputStream is = new ByteArrayInputStream(args[0].getBytes());
+		String game = "0,1,2,0,1,2,0,"
+				+ "0,1,2,0,1,2,0,"
+				+ "0,1,2,0,1,2,0,"
+				+ "0,1,2,0,1,2,0,"
+				+ "0,1,2,0,1,2,0,"
+				+ "0,1,2,0,1,2,0,"
+				+ "0,1,2,0,1,2,0,"
+				+ "0,1,2,0,1,2,0,"
+				+ "0,1,2,0,1,2,0";
+		String game0 = "0,0,0,0,0,0,0,"
+				+ "0,0,0,0,0,0,0,"
+				+ "0,0,0,0,0,0,0,"
+				+ "0,0,0,0,0,0,0,"
+				+ "0,0,0,0,0,0,0,"
+				+ "0,0,0,0,0,0,0,"
+				+ "0,0,0,0,0,0,0,"
+				+ "0,0,0,0,0,0,0,"
+				+ "0,0,0,0,0,0,0,";
+		InputStream is = new ByteArrayInputStream(game0.getBytes());
 		
 		Scanner scanner = new Scanner(is); //System.in
 		String[] input = scanner.next().split(",");
