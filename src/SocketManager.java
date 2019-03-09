@@ -1,19 +1,34 @@
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.stream.Stream;
 
 public class SocketManager {
 
     private Socket socket;
-    private PrintWriter out;
     private OutputStream stream;
 
-    public SocketManager(String ip, int port) throws IOException {
-        socket = new Socket(ip, port);
-        stream = socket.getOutputStream();
-        System.out.println("Socket opened successfully!");
+    public SocketManager(String ip, int port) throws InterruptedException {
+
+        for (int i = 0; i < 100; i++) {
+
+            if(openSocket(ip , port)) {
+                System.out.println("Socket successfully open.");
+                break;
+            } else {
+                System.out.println("Can not open socket. Try again in 5 seconds. Try number: " + (i + 1));
+            }
+            Thread.sleep(5000);
+        }
+    }
+
+    private boolean openSocket(String ip, int port){
+        try {
+            socket = new Socket(ip, port);
+            stream = socket.getOutputStream();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     public void sendCooridnates(int x, int y) throws IOException {
@@ -25,8 +40,7 @@ public class SocketManager {
     }
 
     public void stopConnection() throws IOException {
-        out.close();
+        stream.close();
         socket.close();
     }
-
 }
