@@ -23,6 +23,26 @@ public class Board {
     private int moveCount;
     private boolean gameOver;
 
+
+    Board(int[][] gameState){
+        this();
+
+        if(gameState.length != BOARD_HEIGHT || gameState[0].length != BOARD_WIDTH) {
+            System.out.println("ERROR: Can not initialize Board. Incoming board size is invalid.");
+            return;
+        }
+
+        for (int i = 0; i < gameState.length; i++) {
+            for (int j = 0; j < gameState[i].length; j++) {
+                if(gameState[i][j] == 1)
+                    board[i][j] = State.X;
+
+                else if (gameState[i][j] == 2)
+                    board[i][j] = State.O;
+            }
+        }
+    }
+
     /**
      * Construct the Tic Tac Toe board.
      */

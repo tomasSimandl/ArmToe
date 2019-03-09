@@ -31,9 +31,8 @@ public class SocketManager {
         }
     }
 
-    public void sendCooridnates(int x, int y) throws IOException {
-        System.out.println("Sending coordinates to Karel: " + String.valueOf(x) + y);
-        System.out.println("Is socket connected: " + socket.isConnected());
+    public void sendCoordinates(int x, int y) throws IOException {
+        System.out.println("Sending coordinates to Karel: [" + x + "," + y + "]");
         stream.write(x);
         stream.write(y);
         stream.flush();
@@ -42,5 +41,9 @@ public class SocketManager {
     public void stopConnection() throws IOException {
         stream.close();
         socket.close();
+    }
+
+    public boolean isOpen(){
+        return socket != null && socket.isConnected();
     }
 }
