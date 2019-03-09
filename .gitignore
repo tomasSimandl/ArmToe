@@ -1,4 +1,5 @@
 .settings/org.eclipse.jdt.core.prefs
 .classpath
 .project
-bin/Game.class
+.idea
+*.iml
