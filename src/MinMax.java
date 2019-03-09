@@ -6,7 +6,7 @@ import java.io.IOException;
  */
 class MinMax {
     private static double maxPly;
-
+    public static int[] lastMove = new int[2];
     /**
      * MiniMax cannot be instantiated.
      */
@@ -24,8 +24,7 @@ class MinMax {
         }
 
         MinMax.maxPly = maxPly;
-        int score = miniMax(player, board, 0);
-        System.out.println(score);
+        miniMax(player, board, 0);
     }
 
     /**
@@ -71,6 +70,8 @@ class MinMax {
             }
 
         }
+        lastMove[0] = indexOfBestMove% board.BOARD_WIDTH;
+        lastMove[1] = indexOfBestMove/board.BOARD_HEIGHT;
         board.move(indexOfBestMove);
         return (int)bestScore;
     }
@@ -97,6 +98,8 @@ class MinMax {
             }
 
         }
+        lastMove[0] = indexOfBestMove% board.BOARD_WIDTH;
+        lastMove[1] = indexOfBestMove/board.BOARD_HEIGHT;
         board.move(indexOfBestMove);
         return (int)bestScore;
     }
@@ -116,22 +119,27 @@ class MinMax {
 
         
         if (board.isGameOver() && board.getWinner() == player) {
-            return 1000;
+            return 100;
         } else if (board.isGameOver() && board.getWinner() == opponent) {
-            return -1000;
+            return -100;
         } else {
         	int score = 0;
         	
         	for(int x = 0; x<Board.BOARD_WIDTH;x++) {
-        		score += board.checkColumn(x,player,true);
+        		score += board.checkColumn(x,player)*board.checkColumn(x,player);
+        		score -= board.checkColumn(x,opponent)*board.checkColumn(x,opponent);
         	}
         	for(int y = 0; y<Board.BOARD_HEIGHT;y++) {
-        		score += board.checkRow(y,player,true);        	
+        		score += board.checkRow(y,player)*board.checkRow(y,player);        
+        		score -= board.checkRow(y,opponent)*board.checkRow(y,opponent);  
         	}
         	for(int x = 0; x<Board.BOARD_WIDTH;x++) {
-        		score += board.checkDiagonalFromTopLeft(x, Board.BOARD_HEIGHT/2,player,true);
-            	score += board.checkDiagonalFromTopLeft(x, Board.BOARD_HEIGHT/2,player,true);
+        		score += board.checkDiagonalFromTopLeft(x, Board.BOARD_HEIGHT/2,player)*board.checkDiagonalFromTopLeft(x, Board.BOARD_HEIGHT/2,player);
+            	score += board.checkDiagonalFromTopRight(x, Board.BOARD_HEIGHT/2,player)*board.checkDiagonalFromTopRight(x, Board.BOARD_HEIGHT/2,player);
+            	score -= board.checkDiagonalFromTopLeft(x, Board.BOARD_HEIGHT/2,opponent)*board.checkDiagonalFromTopLeft(x, Board.BOARD_HEIGHT/2,opponent);
+            	score -= board.checkDiagonalFromTopRight(x, Board.BOARD_HEIGHT/2,opponent)*board.checkDiagonalFromTopRight(x, Board.BOARD_HEIGHT/2,opponent);
         	}
+        	//System.out.println(score);
         	return score;   			
         }
     }
