@@ -39,9 +39,10 @@ public class Board {
                     move(i,j);
                 }
 
-                else if (gameState[i][j] == 2)
+                else if (gameState[i][j] == 2) {
                     playersTurn = State.O;
-                    move(i,j);
+                    move(i, j);
+                }
             }
         }
     }
