@@ -108,8 +108,8 @@ public class Board {
         if (gameOver) {
             throw new IllegalStateException("TicTacToe is over. No moves can be played.");
         }
-        if (board[x][y] == State.Blank) {
-            board[x][y] = playersTurn;
+        if (board[y][x] == State.Blank) {
+            board[y][x] = playersTurn;
         } else {
             return false;
         }
@@ -351,10 +351,10 @@ public class Board {
         for (int y = 0; y < BOARD_HEIGHT; y++) {
             for (int x = 0; x < BOARD_WIDTH; x++) {
 
-                if (board[x][y] == State.Blank) {
+                if (board[y][x] == State.Blank) {
                     sb.append("-");
                 } else {
-                    sb.append(board[x][y].name());
+                    sb.append(board[y][x].name());
                 }
                 sb.append(" ");
 
