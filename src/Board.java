@@ -34,14 +34,11 @@ public class Board {
 
         for (int i = 0; i < gameState.length; i++) {
             for (int j = 0; j < gameState[i].length; j++) {
-                if(gameState[i][j] == 1) {
-                    playersTurn = State.X;
-                    move(i,j);
-                }
+                if(gameState[i][j] == 1)
+                    board[i][j] = State.X;
 
                 else if (gameState[i][j] == 2)
-                    playersTurn = State.O;
-                    move(i,j);
+                    board[i][j] = State.O;
             }
         }
     }
@@ -194,7 +191,7 @@ public class Board {
     	for (int rowNum=startPosX; rowNum<=endPosX; rowNum++) {
     	    for (int colNum=startPosY; colNum<=endPosY; colNum++) {
     	    	
-    	    	if(board[rowNum][colNum]!=State.Blank) {
+    	    	if(board[colNum][rowNum]!=State.Blank) {
     	    		//System.out.println("yes "+colNum+" "+rowNum);
     	    		return true;
     	    	}
